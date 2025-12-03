@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Header from './components/Header';
 import Button from './components/Button';
 import AnalysisCard from './components/AnalysisCard';
+import { SettingsModal } from './components/SettingsModal';
 import { analyzeScriptContent, recommendTopics, generateNewScript } from './services/geminiService';
 import { ScriptAnalysis, TopicRecommendation, AppState } from './types';
 import { ArrowRightIcon, SparklesIcon, DocumentTextIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
@@ -14,6 +15,7 @@ const App: React.FC = () => {
   const [recommendations, setRecommendations] = useState<TopicRecommendation[]>([]);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [generatedScript, setGeneratedScript] = useState<string>('');
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
   // Refs for auto-scrolling
   const analysisRef = useRef<HTMLDivElement>(null);
@@ -80,7 +82,8 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 font-sans text-slate-100 selection:bg-blue-500/30">
-      <Header />
+      <Header onSettingsClick={() => setIsSettingsOpen(true)} />
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 
       <main className="max-w-4xl mx-auto px-6 py-12 space-y-16">
         

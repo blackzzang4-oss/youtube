@@ -2,9 +2,13 @@ import { GoogleGenAI, Type, Schema } from "@google/genai";
 import { ScriptAnalysis, TopicRecommendation } from "../types";
 
 const getAiClient = () => {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error("API Key not found");
+  // Try to get API key from localStorage first, then fallback to env variable
+  const apiKey = typeof window !== 'undefined' 
+    ? localStorage.getItem('GEMINI_API_KEY') || process.env.GEMINI_API_KEY
+    : process.env.GEMINI_API_KEY;
+    
+  if (!apiKey || apiKey === 'your_api_key_here') {
+    throw new Error("API 키를 설정해주세요. 우측 상단의 설정 버튼을 클릭하세요.");
   }
   return new GoogleGenAI({ apiKey });
 };
